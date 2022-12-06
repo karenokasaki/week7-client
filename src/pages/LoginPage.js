@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -16,6 +17,19 @@ function LoginPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/user/login",
+        form
+      );
+
+      console.log(response.data);
+
+      //setItem -> coloca algo dentro do localStorage
+      localStorage.setItem("loggedInUser", JSON.stringify(response.data));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (

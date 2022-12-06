@@ -1,7 +1,23 @@
 import { Button, Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import api from "../api/api";
 
 function ProfilePage() {
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const response = await api.get("/user/profile");
+
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchUser();
+  }, []);
+
   return (
     <div>
       <Navbar bg="dark" variant="dark" expand="lg">

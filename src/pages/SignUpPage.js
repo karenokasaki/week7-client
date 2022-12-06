@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios"
 
 function SignUpPage() {
   const navigate = useNavigate();
@@ -18,6 +19,21 @@ function SignUpPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    //conferir se a senhas estão iguais
+    if (form.password !== form.confirmPassword) {
+        alert("Senhas incompatíveis")
+        return
+    }
+
+    //disparo a requisição de cadastro para o meu servidor
+    try {
+        await axios.post("http://localhost:8080/user/sign-up", form)
+
+        navigate("/login")
+    } catch (error) {
+        console.log(error)
+    }
 
     // criar a requisição para enviar este novo usuário
     // requisição método POST
@@ -78,7 +94,7 @@ function SignUpPage() {
         </Button>
       </Form>
       <Form.Text>
-        Ainda não possui cadastro? Faça já o
+        Já possui cadastro? Faça já o
         <Link className="text-warning fw-bold text-decoration-none" to="/login">
           {" "}
           login
