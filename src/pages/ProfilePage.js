@@ -1,6 +1,6 @@
 import { Button, Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../contexts/authContext";
 import api from "../api/api";
 
@@ -9,11 +9,13 @@ function ProfilePage() {
 
   const { setLoggedInUser } = useContext(AuthContext);
 
+  const [user, setUser] = useState({});
+
   useEffect(() => {
     async function fetchUser() {
       try {
         const response = await api.get("/user/profile");
-        console.log(response);
+        setUser(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -27,7 +29,7 @@ function ProfilePage() {
     localStorage.removeItem("loggedInUser");
 
     //atualizar o meu context
-    setLoggedInUser(null)
+    setLoggedInUser(null);
 
     navigate("/");
   }
@@ -50,6 +52,9 @@ function ProfilePage() {
 
       <Container className="mt-5">
         <h1 className="text-muted">Nome do usuário</h1>
+        <p>{user.name}</p>
+        <p>{user.email}</p>
+        <img src={user.profilePic} alt="profile Pic" />
         <Row>
           <Col>
             <Button variant="primary">
