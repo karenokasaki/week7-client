@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import api from "../api/api.js";
+import { AuthContext } from "../contexts/authContext";
 
 function LoginPage() {
   const navigate = useNavigate();
+
+  const { setLoggedInUser } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     email: "",
@@ -21,12 +23,17 @@ function LoginPage() {
     try {
       const response = await api.post("/user/login", form);
 
-      console.log(response.data);
-
-      navigate("/profile");
-
       //setItem -> coloca algo dentro do localStorage
       localStorage.setItem("loggedInUser", JSON.stringify(response.data));
+
+      //atualizar o contexto
+      setLoggedInUser({ ...response.data });
+
+       /*  if (response.data.user.role === "ADMIN") {
+            navigate("/admin")
+        } */
+
+      navigate("/profile");
     } catch (error) {
       console.log(error);
     }

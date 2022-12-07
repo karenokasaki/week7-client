@@ -1,10 +1,13 @@
 import { Button, Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { AuthContext } from "../contexts/authContext";
 import api from "../api/api";
 
 function ProfilePage() {
   const navigate = useNavigate();
+
+  const { setLoggedInUser } = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchUser() {
@@ -20,7 +23,12 @@ function ProfilePage() {
   }, []);
 
   function signOut() {
+    //removendo o loggedInUser do localStorage
     localStorage.removeItem("loggedInUser");
+
+    //atualizar o meu context
+    setLoggedInUser(null)
+
     navigate("/");
   }
 
@@ -39,6 +47,7 @@ function ProfilePage() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
       <Container className="mt-5">
         <h1 className="text-muted">Nome do usuário</h1>
         <Row>
