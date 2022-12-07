@@ -1,14 +1,15 @@
 import { Button, Col, Container, Nav, Navbar, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import api from "../api/api";
 
 function ProfilePage() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     async function fetchUser() {
       try {
         const response = await api.get("/user/profile");
-
         console.log(response);
       } catch (error) {
         console.log(error);
@@ -17,6 +18,11 @@ function ProfilePage() {
 
     fetchUser();
   }, []);
+
+  function signOut() {
+    localStorage.removeItem("loggedInUser");
+    navigate("/");
+  }
 
   return (
     <div>
@@ -48,6 +54,11 @@ function ProfilePage() {
               <Link className="nav-link" to="/delete-profile">
                 Excluir perfil
               </Link>
+            </Button>
+          </Col>
+          <Col>
+            <Button variant="dark" onClick={signOut}>
+              Sign Out
             </Button>
           </Col>
         </Row>
