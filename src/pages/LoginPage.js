@@ -22,6 +22,8 @@ function LoginPage() {
     e.preventDefault();
     try {
       const response = await api.post("/user/login", form);
+      
+      //validar se o usuário confirmou o email dele
 
       //setItem -> coloca algo dentro do localStorage
       localStorage.setItem("loggedInUser", JSON.stringify(response.data));
@@ -29,13 +31,17 @@ function LoginPage() {
       //atualizar o contexto
       setLoggedInUser({ ...response.data });
 
-       /*  if (response.data.user.role === "ADMIN") {
+      /*  if (response.data.user.role === "ADMIN") {
             navigate("/admin")
         } */
 
       navigate("/profile");
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401) {
+        alert("Por favor, ative seu email antes do login");
+        return;
+      }
     }
   }
 

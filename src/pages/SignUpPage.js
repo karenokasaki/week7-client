@@ -51,8 +51,8 @@ function SignUpPage() {
     }
 
     //vou chamar a função handleUpload()
+    
     const imgURL = await handleUpload()
-
     //disparo a requisição de cadastro para o meu servidor
     try {
       await api.post("/user/sign-up", {...form, profilePic: imgURL});
@@ -61,9 +61,6 @@ function SignUpPage() {
     } catch (error) {
       console.log(error);
     }
-
-    // criar a requisição para enviar este novo usuário
-    // requisição método POST
   }
 
   return (
