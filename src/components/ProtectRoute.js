@@ -3,8 +3,9 @@ import { AuthContext } from "../contexts/authContext";
 import { Navigate } from "react-router-dom";
 
 function ProtectRoute({ Component }) {
-
   const { loggedInUser } = useContext(AuthContext);
+
+  console.log(loggedInUser);
 
   if (loggedInUser) {
     //mostra o componente
